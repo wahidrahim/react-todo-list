@@ -8,12 +8,8 @@ export class App extends React.Component {
       newTask: '',
       todos: []
     }
-  }
 
-  setNewTask = e => {
-    this.setState({
-      newTask: e.target.value
-    })
+    this.taskInput = React.createRef()
   }
 
   addTask = e => {
@@ -28,6 +24,8 @@ export class App extends React.Component {
       ]
     })
 
+    this.taskInput.current.value = ''
+
     e.preventDefault()
   }
 
@@ -35,7 +33,15 @@ export class App extends React.Component {
     return (
       <div id="app">
         <form onSubmit={this.addTask}>
-          <input type="text" onChange={this.setNewTask} />
+          <input
+            type="text"
+            ref={this.taskInput}
+            onChange={e => {
+              this.setState({
+                newTask: e.target.value
+              })
+            }}
+          />
           <button type="submit">Add</button>
         </form>
         <ul>
