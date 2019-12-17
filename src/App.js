@@ -12,6 +12,14 @@ export class App extends React.Component {
     this.taskInput = React.createRef()
   }
 
+  get pending() {
+    return this.state.todos.filter(todo => !todo.done)
+  }
+
+  get completed() {
+    return this.state.todos.filter(todo => todo.done)
+  }
+
   addTask = async e => {
     e.preventDefault()
 
@@ -37,6 +45,13 @@ export class App extends React.Component {
     this.saveTodos()
   }
 
+  unfinish(todo) {
+    todo.done = false
+
+    this.setState({ todos: this.state.todos })
+    this.saveTodos()
+  }
+
   saveTodos() {
     localStorage.setItem('todos', JSON.stringify(this.state.todos))
   }
@@ -53,31 +68,27 @@ export class App extends React.Component {
           <button type="submit">Add</button>
         </form>
         <ul>
-          {this.state.todos.map(todo => {
+          {this.pending.map(todo => {
             return (
               <li key={todo.id}>
-                {todo.done ? (
-                  <strike>{todo.task}</strike>
-                ) : (
-                  <span>{todo.task}</span>
-                )}
+                <span>{todo.task}</span>
                 <button onClick={() => this.finish(todo)}>Done</button>
               </li>
             )
           })}
         </ul>
 
-        {/* <h4>Completed</h4>
-      <ul>
-        {this.state.todos.map(todo => {
-          return (
-            <li>
-              <span>{todo.task}</span>
-              <button>Done</button>
-            </li>
-          )
-        })}
-      </ul> */}
+        <h4>Completed</h4>
+        <ul>
+          {this.completed.map(todo => {
+            return (
+              <li key={todo.id}>
+                <span>{todo.task}</span>
+                <button onClick={() => this.unfinish(todo)}>Done</button>
+              </li>
+            )
+          })}
+        </ul>
       </div>
     )
   }
