@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import './App.css'
 
 function App() {
+  const ref = useRef()
   const [newTodo, setNewTodo] = useState('')
   const [todos, setTodos] = useState([
     {
@@ -11,29 +12,35 @@ function App() {
     }
   ])
 
+  const addTodo = e => {
+    setTodos([
+      ...todos,
+      {
+        id: todos.length + 1,
+        task: newTodo,
+        completed: false
+      }
+    ])
+
+    ref.current.value = ''
+    e.preventDefault()
+  }
+
   return (
     <div className="App">
-      <input type="text" onChange={e => setNewTodo(e.target.value)} />
-      <button
-        onClick={() => {
-          setTodos([
-            ...todos,
-            {
-              id: todos.length + 1,
-              task: newTodo,
-              completed: false
-            }
-          ])
-        }}
-      >
-        Add
-      </button>
+      <form onSubmit={addTodo}>
+        <input
+          type="text"
+          onChange={e => setNewTodo(e.target.value)}
+          ref={ref}
+        />
+        <button type="submit">Add</button>
+      </form>
       <ul>
         {todos.map(todo => {
           return <li key={todo.id}>{todo.task}</li>
         })}
       </ul>
-      <pre>{newTodo}</pre>
     </div>
   )
 }
