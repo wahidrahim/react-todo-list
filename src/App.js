@@ -27,7 +27,17 @@ export class App extends React.Component {
     })
 
     this.taskInput.current.value = ''
+    this.saveTodos()
+  }
 
+  finish(todo) {
+    todo.done = true
+
+    this.setState({ todos: this.state.todos })
+    this.saveTodos()
+  }
+
+  saveTodos() {
     localStorage.setItem('todos', JSON.stringify(this.state.todos))
   }
 
@@ -38,11 +48,7 @@ export class App extends React.Component {
           <input
             type="text"
             ref={this.taskInput}
-            onChange={e => {
-              this.setState({
-                newTask: e.target.value
-              })
-            }}
+            onChange={e => this.setState({ newTask: e.target.value })}
           />
           <button type="submit">Add</button>
         </form>
@@ -50,8 +56,12 @@ export class App extends React.Component {
           {this.state.todos.map(todo => {
             return (
               <li key={todo.id}>
-                <span>{todo.task}</span>
-                <button>Done</button>
+                {todo.done ? (
+                  <strike>{todo.task}</strike>
+                ) : (
+                  <span>{todo.task}</span>
+                )}
+                <button onClick={() => this.finish(todo)}>Done</button>
               </li>
             )
           })}
