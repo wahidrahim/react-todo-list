@@ -1,48 +1,29 @@
-import React, { useState, useRef } from 'react'
-import './App.css'
+import React from 'react'
 
-function App() {
-  const ref = useRef()
-  const [newTodo, setNewTodo] = useState('')
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      task: 'example task',
-      completed: false
-    }
-  ])
-
-  const addTodo = e => {
-    setTodos([
-      ...todos,
-      {
-        id: todos.length + 1,
-        task: newTodo,
-        completed: false
-      }
-    ])
-
-    ref.current.value = ''
-    e.preventDefault()
-  }
-
-  return (
-    <div className="App">
-      <form onSubmit={addTodo}>
-        <input
-          type="text"
-          onChange={e => setNewTodo(e.target.value)}
-          ref={ref}
-        />
+export class App extends React.Component {
+  render() {
+    return (
+      <form>
+        <input type="text" />
         <button type="submit">Add</button>
+
+        <ul>
+          <li>
+            <span>Example task</span>
+            <button>Done</button>
+          </li>
+        </ul>
+
+        <h4>Completed</h4>
+        <ul>
+          <li>
+            <span>Example task</span>
+            <button>Done</button>
+          </li>
+        </ul>
       </form>
-      <ul>
-        {todos.map(todo => {
-          return <li key={todo.id}>{todo.task}</li>
-        })}
-      </ul>
-    </div>
-  )
+    )
+  }
 }
 
 export default App
