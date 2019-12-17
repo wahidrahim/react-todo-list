@@ -6,14 +6,16 @@ export class App extends React.Component {
 
     this.state = {
       newTask: '',
-      todos: []
+      todos: JSON.parse(localStorage.getItem('todos')) || []
     }
 
     this.taskInput = React.createRef()
   }
 
-  addTask = e => {
-    this.setState({
+  addTask = async e => {
+    e.preventDefault()
+
+    await this.setState({
       todos: [
         ...this.state.todos,
         {
@@ -26,7 +28,7 @@ export class App extends React.Component {
 
     this.taskInput.current.value = ''
 
-    e.preventDefault()
+    localStorage.setItem('todos', JSON.stringify(this.state.todos))
   }
 
   render() {
