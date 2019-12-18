@@ -1,12 +1,14 @@
 import React from 'react'
 
+const STORAGE_KEY = 'react-todo-list/todos'
+
 export class App extends React.Component {
   constructor() {
     super()
 
     this.state = {
       newTask: '',
-      todos: JSON.parse(localStorage.getItem('todos')) || []
+      todos: JSON.parse(localStorage.getItem(STORAGE_KEY)) || []
     }
 
     this.taskInput = React.createRef()
@@ -53,7 +55,7 @@ export class App extends React.Component {
   }
 
   saveTodos() {
-    localStorage.setItem('todos', JSON.stringify(this.state.todos))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.todos))
   }
 
   render() {
